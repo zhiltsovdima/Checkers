@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    
     var body: some View {
-        Text("Settings View")
-            .font(.largeTitle)
-            .navigationTitle("Settings")
+        Form {
+            Section(header: Text("Appearance")) {
+                Picker("Theme", selection: $themeManager.selectedTheme) {
+                    ForEach(ThemeOption.allCases) { theme in
+                        Text(theme.rawValue).tag(theme)
+                    }
+                }
+            }
+        }
+        .navigationTitle("Settings")
     }
 }
 
