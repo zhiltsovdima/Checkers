@@ -14,9 +14,11 @@ struct MainView: View {
         NavigationStack(path: $coordinator.path) {
             ZStack {
                 Color.white
+                    .ignoresSafeArea()
                 
                 VStack {
-                    Text("Русские шашки")
+                    Text("Russian Checkers")
+                        .foregroundColor(.black)
                         .font(.largeTitle)
                         .bold()
                         .padding(.bottom)

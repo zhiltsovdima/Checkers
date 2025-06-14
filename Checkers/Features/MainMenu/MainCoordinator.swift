@@ -9,6 +9,8 @@ import SwiftUI
 
 class MainCoordinator: ObservableObject {
     @Published var path = NavigationPath()
+    
+    var isHost: Bool = false
         
     func push(_ screen: Screen) {
         path.append(screen)
@@ -18,17 +20,24 @@ class MainCoordinator: ObservableObject {
         path.removeLast()
     }
     
+    func exitGame() {
+        path = NavigationPath()
+    }
+    
     @ViewBuilder
     func build(screen: Screen) -> some View {
         switch screen {
         case .mainMenu:
             MainView(coordinator: self)
         case .lobby:
-            LobbyView()
+            LobbyView(coordinator: self)
         case .settings:
             SettingsView()
         case .info:
             InfoView()
+        case .game:
+            let viewModel = GameViewModel(isHost: isHost)
+            GameView(coordinator: self, viewModel: viewModel)
         }
     }
 }
@@ -41,6 +50,8 @@ extension MainCoordinator {
         case lobby
         case settings
         case info
+        
+        case game
                 
         var localizedName: String {
             switch self {
@@ -52,6 +63,8 @@ extension MainCoordinator {
                 return "Settings"
             case .info:
                 return "Info"
+            case .game:
+                return "Game"
             }
         }
     }
