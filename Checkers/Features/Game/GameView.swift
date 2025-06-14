@@ -171,6 +171,16 @@ struct StatusView: View {
     let winner: Player?
     let isHost: Bool
     
+    var winnerMessage: String {
+        if winner == .white {
+            return "White Wins!"
+        } else if winner == .black {
+            return "Black Wins!"
+        } else {
+            return ""
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 8) {
             let isPlayerTurn = (isHost && currentPlayer == .white) || (!isHost && currentPlayer == .black)
@@ -179,7 +189,7 @@ struct StatusView: View {
                 .foregroundColor(ThemeManager.shared.textColor)
             
             if isGameOver {
-                Text(winner == .white ? "White Wins!" : winner == .black ? "Black Wins!" : "Draw!")
+                Text(winnerMessage)
                     .font(.system(.title, weight: .bold))
                     .foregroundColor(.red)
             }
@@ -190,7 +200,6 @@ struct StatusView: View {
 
 struct GameInteractionHandler {
     static func handleTap(row: Int, col: Int, game: CheckersGame, possibleMoves: inout [Move], isHost: Bool, sendMove: (Move) -> Void) {
-        // Проверяем, ходит ли текущий игрок
         let isPlayerTurn = (isHost && game.currentPlayer == .white) || (!isHost && game.currentPlayer == .black)
         guard isPlayerTurn else { return }
         
